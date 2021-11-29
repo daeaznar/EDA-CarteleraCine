@@ -49,7 +49,7 @@ def login():
     print("*Login*")
     while True:
         print("Enter your credentials (press 0 to cancel)\n")
-        user_name = input("user_name: ")
+        user_name = input("User Name: ")
         if user_name == '0':
             break
         password = mask_password.hide_pass()
