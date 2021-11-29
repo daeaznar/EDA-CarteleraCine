@@ -29,10 +29,8 @@ def client_menu():
                 pass
             elif opt == 0:
                 while True:
-                    confirm = input("Are you sure you want to log out? (y/n)>>")
+                    confirm = input("Are you sure you want to exit? (y/n)>>")
                     if confirm == 'y':
-                        print(f"See you soon\n"
-                              "Logging out...")
                         break
                     elif confirm == 'n':
                         print()

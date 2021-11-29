@@ -24,7 +24,7 @@ def main():
             print("Invalid Option\n")
         else:
             if opt == 1:
-                client_menu()
+                client_menu.client_menu()
             elif opt == 2:
                 login()
             elif opt == 0:
@@ -72,7 +72,7 @@ def login():
         except:
             print("Incorrect user_name or password\n")
         else:
-            admin_menu()
+            admin_menu.admin_menu()
             break
 
 

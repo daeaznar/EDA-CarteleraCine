@@ -2,7 +2,7 @@ import mask_password
 import sqlite3
 import pandas as pd
 
-conn = sqlite3.connect('finance_app.db')
+conn = sqlite3.connect('cinema.db')
 cursor = conn.cursor()
 
 

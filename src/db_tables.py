@@ -107,5 +107,4 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
 
 
 conn.commit()
-
 conn.close()
