@@ -217,7 +217,7 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
 # endregion
 
 # cursor.execute("Delete from city")
-# cursor.execute("select * from city WHERE state_id=5")
+cursor.execute("select * from city")
 print(cursor.fetchall())
 
 conn.commit()

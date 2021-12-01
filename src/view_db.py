@@ -1,6 +1,5 @@
 import pandas as pd
 import sqlite3
-import sqlalchemy
 
 try:
     conn = sqlite3.connect('cinema.db')
