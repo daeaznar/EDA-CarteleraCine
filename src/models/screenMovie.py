@@ -3,14 +3,18 @@ import sqlite3
 class ScreenMovie:
     def __init__(
         self,
-        user_id=None,
-        user_name=None,
-        password=None,
+        screen_id=None,
+        screen_number=None,
+        movie_id=None,
+        city_id=None,
+        movie_time=None,
         is_active=1
     ):
-        self.user_id = user_id
-        self.user_name = user_name
-        self.password = password
+        self.screen_id = screen_id
+        self.screen_number = screen_number
+        self.movie_id = movie_id
+        self.city_id = city_id
+        self.movie_time = movie_time
         self.is_active = is_active
 
     def __getitem__(self, key):
@@ -100,7 +104,7 @@ class ListScreenMovie:
 
 class ScreenMoviesModel:
     def __init__(self):
-        self.table = 'user'
+        self.table = 'screen_movie'
         self.database = 'cinema.db'
 
     def getAll(self):
@@ -116,7 +120,7 @@ class ScreenMoviesModel:
                 data = []
 
                 for i, row in enumerate(result):
-                    data.insert(i, ScreenMovie(row[0], row[1], row[2], row[3]))
+                    data.insert(i, ScreenMovie(row[0], row[1], row[2], row[3], row[4], row[5]))
 
                 return data
             else:
@@ -132,7 +136,7 @@ class ScreenMoviesModel:
         cursor = conn.cursor()
 
         try:
-            result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('user_id, ' if user.user_id != None else '') + 'user_name, password, is_active) VALUES (' + (':user_id, ' if user.user_id != None else '') + ':user_name, :password, :is_active)',  {'user_id': user.user_id, 'user_name': user.user_name, 'password': user.password, 'is_active': user.is_active})
+            result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('screen_id, ' if user.screen_id != None else '') + 'screen_number, movie_id, city_id, movie_time, is_active) VALUES (' + (':screen_id, ' if user.screen_id != None else '') + ':screen_number, :movie_id, :city_id, :movie_time, :is_active)',  {'screen_id': user.screen_id, 'screen_number': user.screen_number, 'movie_id': user.movie_id, 'city_id': user.city_id, 'movie_time': user.movie_time, 'is_active': user.is_active})
             conn.commit()
             
             if (result):

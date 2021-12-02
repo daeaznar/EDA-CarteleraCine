@@ -1,9 +1,11 @@
 import sqlite3
 import mask_password
+from listData import *
 from classes import User
 
 
-def admin_menu():
+def admin_menu(listData):
+    # makeBinaryTree(listData)
     print()
     while True:
         print("""
@@ -104,3 +106,19 @@ def register():
                 conn.close()
                 break
         break
+
+
+# def makeBinaryTree(listData):
+#     movieList = listData.movies.list
+#     if movieList:
+#         ptr = root = movieList
+#         while True:
+#             if movieList.next is None:
+#                 break
+#             else:
+#                 if movieList:
+#                     movieList = movieList.next
+#     else:
+#         print("No movies registered")
+
+

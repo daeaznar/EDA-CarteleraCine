@@ -31,14 +31,18 @@ class ListCity:
     def getList(self):
         return self.list
 
-    def getByFilter(self, key: str, value: any):
+    def getByFilter(self, key: str, value: any, key2: str = None, value2: any = None):
         filteredData = ListCity()
 
         tempList = self.list
 
         while(True):
-            if (tempList.data[key] == value):
-                filteredData.insert(tempList.data)
+            if (key2 is None or value2 is None):
+                if (tempList.data[key] == value):
+                    filteredData.insert(tempList.data)
+            else:
+                if (tempList.data[key] == value and tempList.data[key2] == value2):
+                    filteredData.insert(tempList.data)
 
             if (tempList == None or tempList.next is None):
                 break

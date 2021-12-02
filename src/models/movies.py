@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class Movie:
     def __init__(
         self,
@@ -24,11 +25,13 @@ class Movie:
     def __getitem__(self, key):
         return getattr(self, key)
 
+
 class NodeMovie:
-    def __init__(self, data = None, prev = None, next = None):
+    def __init__(self, data=None, prev=None, next=None):
         self.data: Movie = data
         self.prev: NodeMovie = prev
         self.next: NodeMovie = next
+
 
 class ListMovie:
     def __init__(self):
@@ -37,16 +40,23 @@ class ListMovie:
     def getList(self):
         return self.list
 
-    def getByFilter(self, key: str, value: any):
-        filteredData = ListMovie()
+    def getByFilter(self, key: str, value: any, key2: str = None, value2: any = None):
+        filteredData = []
 
         tempList = self.list
 
         while(True):
-            if (tempList.data[key] == value):
-                filteredData.insert(tempList.data)
+            if (tempList == None):
+                break
 
-            if (tempList == None or tempList.next is None):
+            if (key2 is None or value2 is None):
+                if (tempList.data[key] == value):
+                    filteredData.append(tempList.data)
+            else:
+                if (tempList.data[key] == value and tempList.data[key2] == value2):
+                    filteredData.append(tempList.data)
+
+            if (tempList.next is None):
                 break
             else:
                 tempList = tempList.next
@@ -94,7 +104,7 @@ class ListMovie:
                     else:
                         newList = tempList.next
                         newList.prev = tempList.prev
-                        
+
                         return newList
                 elif (tempPos + 1 == pos and tempList.next.next == None):
                     tempList.next = None
@@ -105,6 +115,7 @@ class ListMovie:
                     return tempList
 
         self.list = deleteValue(self.list, 0)
+
 
 class MoviesModel:
     def __init__(self):
@@ -139,19 +150,19 @@ class MoviesModel:
         conn = sqlite3.connect(self.database)
         cursor = conn.cursor()
 
-        try:
-            result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('movie_id, ' if user.movie_id != None else '') + 'name, director, genre_id, producer, rating, length, is_active) VALUES (' + (':movie_id, ' if user.movie_id != None else '') + ':name, :director, :genre_id, :producer, :rating, :length)',  {'movie_id': user.movie_id, 'name': user.name, 'director': user.director, 'genre_id': user.genre_id, 'producer': user.producer, 'rating': user.rating, 'length': user.length, 'is_active': user.is_active})
-            conn.commit()
-            
-            if (result):
-                return True
-            else:
-                conn.close()
-                return None
-        except:
+        # try:
+        result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('movie_id, ' if user.movie_id != None else '') + 'name, director, genre_id, producer, rating, length, is_active) VALUES (' + (':movie_id, ' if user.movie_id != None else '') + ':name, :director, :genre_id, :producer, :rating, :length, :is_active)',  {'movie_id': user.movie_id, 'name': user.name, 'director': user.director, 'genre_id': user.genre_id, 'producer': user.producer, 'rating': user.rating, 'length': user.length, 'is_active': user.is_active})
+        conn.commit()
+
+        if (result):
+            return True
+        else:
             conn.close()
             return None
-    
+        # except:
+        #     conn.close()
+        #     return None
+
     def deleteAll(self):
         # create DB connection
         conn = sqlite3.connect(self.database)
@@ -160,7 +171,7 @@ class MoviesModel:
         try:
             result = cursor.execute('DELETE FROM ' + self.table + ' WHERE 1 = 1')
             conn.commit()
-            
+
             if (result):
                 return True
             else:
