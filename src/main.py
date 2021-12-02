@@ -1,14 +1,17 @@
 from sys import exit
+import time
 import sqlite3
 import mask_password
 import admin_menu
 import client_menu
 from classes import User
+from listData import ListData
 
 # Define connection and cursor2
 conn = sqlite3.connect('cinema.db')
 cursor = conn.cursor()
-
+listData = ListData()
+listData.getDatabaseData()
 
 def main():
     while True:
@@ -32,6 +35,10 @@ def main():
                 while True:
                     confirm = input("Are you sure you want to exit? (y/n)>>")
                     if confirm == 'y':
+                        listData.backUpData()
+                        print("Creating a backup, please wait...\n\n")
+                        time.sleep(5)
+
                         print("See you later ;)\n\n"
                               "Exiting System...")
                         exit()
