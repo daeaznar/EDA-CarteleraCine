@@ -39,7 +39,6 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
         FOREIGN KEY(state_id) REFERENCES state(state_id)
     )""")
 
-
 # Table for relationship between movies and screens. So we can delete a movie from a specific city/screen
 # without deleting it from another city/screen
 cursor.execute(""" CREATE TABLE IF NOT EXISTS
@@ -206,9 +205,34 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
 #                "VALUES('E', 'Mocorito', 5)")
 
 # endregion
+# region Genres
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Accion')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Aventuras')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Ciencia Ficcion')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Comedia')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Drama')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Thriller')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Suspenso')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Terror')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Romance')")
+# cursor.execute("INSERT INTO genre(name)"
+#                "VALUES('Animacion')")
+# endregion
 
-# cursor.execute("Delete from city")
-# cursor.execute("select * from screen_movie")
+# cursor.execute("insert into movie(name, director, producer, rating, length, genre_id)"
+#                "values('IT', 'Andy Muschietti', 'Roy Lee', 'B15', 135.0, 8)")
+
+# # cursor.execute("Delete from city")
+# cursor.execute("select * from movie")
 print(cursor.fetchall())
 
 conn.commit()

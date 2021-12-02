@@ -1,15 +1,16 @@
 import sqlite3
 
+
 class Movie:
     def __init__(
-        self,
-        movie_id=None,
-        name=None,
-        director=None,
-        producer=None,
-        rating=None,
-        length=None,
-        is_active=1
+            self,
+            movie_id=None,
+            name=None,
+            director=None,
+            producer=None,
+            rating=None,
+            length=None,
+            is_active=1
     ):
         self.movie_id = movie_id
         self.name = name
@@ -22,11 +23,13 @@ class Movie:
     def __getitem__(self, key):
         return getattr(self, key)
 
+
 class NodeMovie:
-    def __init__(self, data = None, prev = None, next = None):
+    def __init__(self, data=None, prev=None, next=None):
         self.data: Movie = data
         self.prev: NodeMovie = prev
         self.next: NodeMovie = next
+
 
 class ListMovie:
     def __init__(self):
@@ -40,7 +43,7 @@ class ListMovie:
 
         tempList = self.list
 
-        while(True):
+        while (True):
             if (tempList.data[key] == value):
                 filteredData.insert(tempList.data)
 
@@ -92,7 +95,7 @@ class ListMovie:
                     else:
                         newList = tempList.next
                         newList.prev = tempList.prev
-                        
+
                         return newList
                 elif (tempPos + 1 == pos and tempList.next.next == None):
                     tempList.next = None
@@ -103,6 +106,7 @@ class ListMovie:
                     return tempList
 
         self.list = deleteValue(self.list, 0)
+
 
 class MoviesModel:
     def __init__(self):
@@ -138,9 +142,14 @@ class MoviesModel:
         cursor = conn.cursor()
 
         try:
-            result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('movie_id, ' if user.movie_id != None else '') + 'name, director, producer, rating, length, is_active) VALUES (' + (':movie_id, ' if user.movie_id != None else '') + ':name, :director, :producer, :rating, :length)',  {'movie_id': user.movie_id, 'name': user.name, 'director': user.director, 'producer': user.producer, 'rating': user.rating, 'length': user.length, 'is_active': user.is_active})
+            result = cursor.execute('INSERT INTO ' + self.table + ' (' + (
+                'movie_id, ' if user.movie_id != None else '') + 'name, director, producer, rating, length, is_active) VALUES (' + (
+                                        ':movie_id, ' if user.movie_id != None else '') + ':name, :director, :producer, :rating, :length)',
+                                    {'movie_id': user.movie_id, 'name': user.name, 'director': user.director,
+                                     'producer': user.producer, 'rating': user.rating, 'length': user.length,
+                                     'is_active': user.is_active})
             conn.commit()
-            
+
             if (result):
                 return True
             else:
@@ -149,7 +158,7 @@ class MoviesModel:
         except:
             conn.close()
             return None
-    
+
     def deleteAll(self):
         # create DB connection
         conn = sqlite3.connect(self.database)
@@ -158,7 +167,7 @@ class MoviesModel:
         try:
             result = cursor.execute('DELETE FROM ' + self.table + ' WHERE 1 = 1')
             conn.commit()
-            
+
             if (result):
                 return True
             else:

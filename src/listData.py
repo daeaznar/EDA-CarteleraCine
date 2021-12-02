@@ -6,6 +6,7 @@ from models.cities import *
 from models.genres import *
 from models.movies import *
 
+
 class ListData():
     def __init__(self):
         self.userModel = UsersModel()
@@ -37,14 +38,14 @@ class ListData():
             self.genres.insert(row)
         for row in movie:
             self.movies.insert(row)
-    
+
     def backUpData(self):
         # get Users list and backup into database
         self.userModel.deleteAll()
         usersList = self.users.list
 
-        if (usersList != None): 
-            while(1 == 1):
+        if (usersList != None):
+            while (1 == 1):
                 self.userModel.create(usersList.data)
 
                 if (usersList.next is None):
@@ -56,8 +57,8 @@ class ListData():
         self.movieModel.deleteAll()
         moviesList = self.movies.list
 
-        if (moviesList != None): 
-            while(1 == 1):
+        if (moviesList != None):
+            while (1 == 1):
                 self.movieModel.create(moviesList.data)
 
                 if (moviesList.next is None):
@@ -73,14 +74,13 @@ class ListData():
 # # time.sleep(5)
 
 # tempList = listData.genres.list
-
+#
 # while(True):
 #     print(str(tempList.data.genre_id) + '- Name: ' + tempList.data.name)
-
+#
 #     if (tempList.next is None):
 #         break
 #     else:
 #         tempList = tempList.next
 
-# # listData.backUpData()
-    
+# listData.backUpData()
