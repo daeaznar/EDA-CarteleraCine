@@ -2,10 +2,13 @@ import sqlite3
 import mask_password
 from listData import *
 from classes import User
+from binaryTree import TreeNode
+import models.movies
 
+listData = ListData()
+listData.getDatabaseData()
 
-def admin_menu(listData):
-    # makeBinaryTree(listData)
+def admin_menu():
     print()
     while True:
         print("""
@@ -26,11 +29,11 @@ def admin_menu(listData):
             print("Invalid Option\n")
         else:
             if opt == 1:
-                pass
+                addMovie()
             elif opt == 2:
                 pass
             elif opt == 3:
-                pass
+                deleteMovie()
             elif opt == 4:
                 pass
             elif opt == 5:
@@ -38,7 +41,7 @@ def admin_menu(listData):
             elif opt == 6:
                 pass
             elif opt == 7:
-                pass
+                viewCinema()
             elif opt == 8:
                 register()
             elif opt == 0:
@@ -108,17 +111,80 @@ def register():
         break
 
 
-# def makeBinaryTree(listData):
-#     movieList = listData.movies.list
-#     if movieList:
-#         ptr = root = movieList
-#         while True:
-#             if movieList.next is None:
-#                 break
-#             else:
-#                 if movieList:
-#                     movieList = movieList.next
-#     else:
-#         print("No movies registered")
+def addMovie():
+    name = input("Enter the name of the movie to ADD: ")
+    
+    
+    movieNode = TreeNode()
+    tempList = listData.movies.list
+
+    while True:
+        movieNode.insert('name', tempList.data)
+        if tempList.next is None:
+            break
+        else:
+            tempList = tempList.next
+
+    # orderedMoviesASC = movieNode.inorder([])
+
+    # print('\n\n********** Lista orden ASC **********')
+    # for row in orderedMoviesASC:
+    #     print(f'{row.movie_id} - {row.name}')
+
+    # orderedMoviesDESC = movieNode.inorder([], False)
+
+    # print('\n\n********** Lista orden DESC **********')
+    # for row in orderedMoviesDESC:
+    #     print(f'{row.movie_id} - {row.name}')
 
 
+def deleteMovie():
+    name = input("Enter the name of the movie to DELETE: ")
+
+    movieNode = TreeNode()
+    tempList = listData.movies.list
+    while True:
+            movieNode.insert('name', tempList.data)
+            if tempList.next is None:
+                break
+            else:
+                tempList = tempList.next
+
+
+def viewCinema():
+    movieNode = TreeNode()
+    tempList = listData.movies.list
+
+    while True:
+        movieNode.insert('name', tempList.data)
+        if tempList.next is None:
+            break
+        else:
+            tempList = tempList.next
+
+    while True:
+        print("""
+            Please select an option to continue\n
+            1. Sort Ascendant
+            2. Sort Descendant
+            0. Go Back
+            """)
+        try:
+            opt = int(input("Option: "))
+        except:
+            print("Invalid Option\n")
+        else:
+            if opt == 1:
+                orderedMoviesASC = movieNode.inorder([])
+                print('\n\n********** Lista orden ASC **********')
+                for row in orderedMoviesASC:
+                    print(f'{row.movie_id} - {row.name}')
+            elif opt == 2:
+                orderedMoviesDESC = movieNode.inorder([], False)
+                print('\n\n********** Lista orden DESC **********')
+                for row in orderedMoviesDESC:
+                    print(f'{row.movie_id} - {row.name}')
+            elif opt == 0:
+                break
+            else:
+                print("Invalid Option\n")

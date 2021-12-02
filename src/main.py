@@ -80,7 +80,7 @@ def login():
         except:
             print("Incorrect user_name or password\n")
         else:
-            admin_menu.admin_menu(listData)
+            admin_menu.admin_menu()
             break
 
 
