@@ -1,44 +1,36 @@
 import sqlite3
 
-class Movie:
+class ScreenMovie:
     def __init__(
         self,
-        movie_id=None,
-        name=None,
-        director=None,
-        genre_id=None,
-        producer=None,
-        rating=None,
-        length=None,
+        user_id=None,
+        user_name=None,
+        password=None,
         is_active=1
     ):
-        self.movie_id = movie_id
-        self.name = name
-        self.director = director
-        self.genre_id = genre_id
-        self.producer = producer
-        self.rating = rating
-        self.length = length
+        self.user_id = user_id
+        self.user_name = user_name
+        self.password = password
         self.is_active = is_active
 
     def __getitem__(self, key):
         return getattr(self, key)
 
-class NodeMovie:
+class NodeScreenMovie:
     def __init__(self, data = None, prev = None, next = None):
-        self.data: Movie = data
-        self.prev: NodeMovie = prev
-        self.next: NodeMovie = next
+        self.data: ScreenMovie = data
+        self.prev: NodeScreenMovie = prev
+        self.next: NodeScreenMovie = next
 
-class ListMovie:
+class ListScreenMovie:
     def __init__(self):
-        self.list: NodeMovie = None
+        self.list: NodeScreenMovie = None
 
     def getList(self):
         return self.list
 
     def getByFilter(self, key: str, value: any):
-        filteredData = ListMovie()
+        filteredData = ListScreenMovie()
 
         tempList = self.list
 
@@ -53,13 +45,13 @@ class ListMovie:
 
         return filteredData
 
-    def insert(self, data: Movie):
-        def insertValue(tempList: NodeMovie):
+    def insert(self, data: ScreenMovie):
+        def insertValue(tempList: NodeScreenMovie):
             if (tempList is None):
-                newList = NodeMovie(data)
+                newList = NodeScreenMovie(data)
                 return newList
             if (tempList.next is None):
-                newList = NodeMovie(data, tempList)
+                newList = NodeScreenMovie(data, tempList)
                 tempList.next = newList
                 return tempList
             else:
@@ -68,8 +60,8 @@ class ListMovie:
 
         self.list = insertValue(self.list)
 
-    def update(self, pos: int, data: Movie):
-        def updateValue(tempList: NodeMovie, tempPos: int):
+    def update(self, pos: int, data: ScreenMovie):
+        def updateValue(tempList: NodeScreenMovie, tempPos: int):
             if (tempList is None):
                 return tempList
             else:
@@ -81,7 +73,7 @@ class ListMovie:
                     return tempList
 
     def delete(self, pos: int):
-        def deleteValue(tempList: NodeMovie, tempPos: int):
+        def deleteValue(tempList: NodeScreenMovie, tempPos: int):
             if (tempList is None):
                 return tempList
             else:
@@ -106,9 +98,9 @@ class ListMovie:
 
         self.list = deleteValue(self.list, 0)
 
-class MoviesModel:
+class ScreenMoviesModel:
     def __init__(self):
-        self.table = 'movie'
+        self.table = 'user'
         self.database = 'cinema.db'
 
     def getAll(self):
@@ -124,7 +116,7 @@ class MoviesModel:
                 data = []
 
                 for i, row in enumerate(result):
-                    data.insert(i, Movie(row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
+                    data.insert(i, ScreenMovie(row[0], row[1], row[2], row[3]))
 
                 return data
             else:
@@ -134,13 +126,13 @@ class MoviesModel:
             conn.close()
             return []
 
-    def create(self, user: Movie):
+    def create(self, user: ScreenMovie):
         # create DB connection
         conn = sqlite3.connect(self.database)
         cursor = conn.cursor()
 
         try:
-            result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('movie_id, ' if user.movie_id != None else '') + 'name, director, genre_id, producer, rating, length, is_active) VALUES (' + (':movie_id, ' if user.movie_id != None else '') + ':name, :director, :genre_id, :producer, :rating, :length)',  {'movie_id': user.movie_id, 'name': user.name, 'director': user.director, 'genre_id': user.genre_id, 'producer': user.producer, 'rating': user.rating, 'length': user.length, 'is_active': user.is_active})
+            result = cursor.execute('INSERT INTO ' + self.table + ' (' + ('user_id, ' if user.user_id != None else '') + 'user_name, password, is_active) VALUES (' + (':user_id, ' if user.user_id != None else '') + ':user_name, :password, :is_active)',  {'user_id': user.user_id, 'user_name': user.user_name, 'password': user.password, 'is_active': user.is_active})
             conn.commit()
             
             if (result):
