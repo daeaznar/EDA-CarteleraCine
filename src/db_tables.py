@@ -39,29 +39,20 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
         FOREIGN KEY(state_id) REFERENCES state(state_id)
     )""")
 
-# Screen Table / Tabla para las salas del cine
-cursor.execute(""" CREATE TABLE IF NOT EXISTS
-    screen(
-        screen_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        screen_number INTEGER NOT NULL,
-        city_id INTEGER,
-        is_active INTEGER DEFAULT 1 NOT NULL,
-        create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        update_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(city_id) REFERENCES city(city_id)
-    )""")
 
 # Table for relationship between movies and screens. So we can delete a movie from a specific city/screen
 # without deleting it from another city/screen
 cursor.execute(""" CREATE TABLE IF NOT EXISTS
     screen_movie(
-        screen_id INTEGER,
+        screen_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        screen_number INTEGER,
         movie_id INTEGER,
+        city_id INTEGER,
         movie_time TIME NOT NULL,
         is_active INTEGER DEFAULT 1 NOT NULL,
         create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         update_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(screen_id) REFERENCES screen(screen_id),
+        FOREIGN KEY(city_id) REFERENCES city(city_id),
         FOREIGN KEY(movie_id) REFERENCES movie(movie_id)
     )""")
 
@@ -91,7 +82,7 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
         update_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )""")
 
-# cursor.execute('drop table city')
+# cursor.execute('drop table screen_movie')
 
 # cursor.execute("SELECT user_id FROM user WHERE user_name = 'abc' ")
 # print(cursor.fetchall())
@@ -217,7 +208,7 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS
 # endregion
 
 # cursor.execute("Delete from city")
-cursor.execute("select * from city")
+# cursor.execute("select * from screen_movie")
 print(cursor.fetchall())
 
 conn.commit()
