@@ -1,4 +1,5 @@
 import time
+from binaryTree import TreeNode
 
 from models.users import *
 from models.states import *
@@ -66,21 +67,34 @@ class ListData():
                 else:
                     moviesList = moviesList.next
 
-# listData = ListData()
-# listData.getDatabaseData()
+listData = ListData()
+listData.getDatabaseData()
+
+treeStates = TreeNode()
 
 # # filteredData = listData.users.getByFilter('user_name', 'john.doe')
 
 # # time.sleep(5)
 
-# tempList = listData.genres.list
-#
-# while(True):
-#     print(str(tempList.data.genre_id) + '- Name: ' + tempList.data.name)
-#
-#     if (tempList.next is None):
-#         break
-#     else:
-#         tempList = tempList.next
+tempList = listData.cities.list
 
+while(True):
+    treeStates.insert('name', tempList.data)
+
+    if (tempList.next is None):
+        break
+    else:
+        tempList = tempList.next
+
+orderedStatesASC = treeStates.inorder([])
+
+print('\n\n********** Lista orden ASC **********')
+for row in orderedStatesASC:
+    print(f'{row.city_id} - {row.name}')
+
+orderedStatesDESC = treeStates.inorder([], False)
+
+print('\n\n********** Lista orden DESC **********')
+for row in orderedStatesDESC:
+    print(f'{row.city_id} - {row.name}')
 # listData.backUpData()
