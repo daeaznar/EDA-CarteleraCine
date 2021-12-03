@@ -3,6 +3,7 @@ import mask_password
 from listData import *
 from classes import User
 from binaryTree import TreeNode
+import pandas as pd
 import models.movies
 
 listData = ListData()
@@ -112,30 +113,76 @@ def register():
 
 
 def addMovie():
-    name = input("Enter the name of the movie to ADD: ")
-    
-    
-    movieNode = TreeNode()
-    tempList = listData.movies.list
+    conn = sqlite3.connect('cinema.db')
+    cursor = conn.cursor()
+    print()
+    print("Add Movie")
 
     while True:
-        movieNode.insert('name', tempList.data)
-        if tempList.next is None:
+        print("Enter information (press 0 to cancel)\n")
+        name = input("Movie name: ")
+        if name == '0':
             break
+
+        cursor.execute("SELECT name FROM movie WHERE name = :name", {'name': name})
+        check_movie = cursor.fetchall()
+
+        if len(check_movie) != 0:
+            print("Movie already exists!\n")
         else:
-            tempList = tempList.next
+            print()
+            director = input("Director Name: ")
+            producer = input("Producer Name: ")
+            rating = input("Rating: ")
+            try:
+                lenght = float(input("Length: "))
+            except:
+                print("Invalid Value\n")
+            else:
+                print()
 
-    # orderedMoviesASC = movieNode.inorder([])
+                print("--------Genres--------")
+                df = pd.read_sql_query('SELECT genre_id, name FROM genre', conn)
+                print(df)
+                print()
 
-    # print('\n\n********** Lista orden ASC **********')
-    # for row in orderedMoviesASC:
-    #     print(f'{row.movie_id} - {row.name}')
+                genre = int(input("Select Genre's ID: "))
 
-    # orderedMoviesDESC = movieNode.inorder([], False)
+                while True:
+                    confirm = input("Is your information correct? (y/n)>>")
+                    if confirm == 'y':
+                        with conn:
+                            cursor.execute("INSERT INTO movie (name, director, producer, rating, length, genre_id)"
+                                        "VALUES(:name, :director, :producer, :rating, :length, :genre_id)",
+                                        {'name': name,
+                                            'director': director,
+                                            'producer': producer,
+                                            'rating': rating,
+                                            'length': lenght,
+                                            'genre_id': genre})
+                        break
+                    elif confirm == 'n':
+                        print()
+                        break
+                    else:
+                        print("Invalid Option\n")
+                if confirm == 'y':
+                    print("Movie Added!")
+                    conn.close()
+                    break
+            break
+        
+    # movieNode = TreeNode()
+    # tempList = listData.movies.list
 
-    # print('\n\n********** Lista orden DESC **********')
-    # for row in orderedMoviesDESC:
-    #     print(f'{row.movie_id} - {row.name}')
+    # while True:
+    #     movieNode.insert('name', tempList.data)
+    #     if tempList.next is None:
+    #         break
+    #     else:
+    #         tempList = tempList.next
+
+    
 
 
 def deleteMovie():
@@ -152,16 +199,19 @@ def deleteMovie():
 
 
 def viewCinema():
-    movieNode = TreeNode()
-    tempList = listData.movies.list
+    # movieNode = TreeNode()
+    # tempList = listData.movies.list
 
-    while True:
-        movieNode.insert('name', tempList.data)
-        if tempList.next is None:
-            break
-        else:
-            tempList = tempList.next
+    # while True:
+    #     movieNode.insert('name', tempList.data)
+    #     if tempList.next is None:
+    #         break
+    #     else:
+    #         tempList = tempList.next
 
+
+    conn = sqlite3.connect('cinema.db')
+    cursor = conn.cursor()
     while True:
         print("""
             Please select an option to continue\n
@@ -175,16 +225,25 @@ def viewCinema():
             print("Invalid Option\n")
         else:
             if opt == 1:
-                orderedMoviesASC = movieNode.inorder([])
-                print('\n\n********** Lista orden ASC **********')
-                for row in orderedMoviesASC:
-                    print(f'{row.movie_id} - {row.name}')
+                print("-----MOVIES ASCENDAT-----")
+                df = pd.read_sql_query('SELECT * FROM movie ORDER BY name ASC', conn)
+                print(df)
+                print()
+                # orderedMoviesASC = movieNode.inorder([])
+                # print('\n\n********** Lista orden ASC **********')
+                # for row in orderedMoviesASC:
+                #     print(f'{row.movie_id} - {row.name}')
             elif opt == 2:
-                orderedMoviesDESC = movieNode.inorder([], False)
-                print('\n\n********** Lista orden DESC **********')
-                for row in orderedMoviesDESC:
-                    print(f'{row.movie_id} - {row.name}')
+                print("-----MOVIES DESCENDANT-----")
+                df = pd.read_sql_query('SELECT * FROM movie ORDER BY name DESC', conn)
+                print(df)
+                print()
+                # orderedMoviesDESC = movieNode.inorder([], False)
+                # print('\n\n********** Lista orden DESC **********')
+                # for row in orderedMoviesDESC:
+                #     print(f'{row.movie_id} - {row.name}')
             elif opt == 0:
                 break
             else:
                 print("Invalid Option\n")
+    conn.close()

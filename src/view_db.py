@@ -17,7 +17,7 @@ print(df)
 print()
 
 print("-----STATES-----")
-df = pd.read_sql_query('SELECT * FROM state', conn)
+df = pd.read_sql_query('SELECT * FROM movie', conn)
 print(df)
 print()
 
